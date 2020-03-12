@@ -1,3 +1,3 @@
 # EasyKeyboard
 
-A description of this package.
+A library for handling keyboard event use protocol and observer pattern.
