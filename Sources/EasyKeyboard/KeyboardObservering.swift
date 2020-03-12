@@ -16,7 +16,7 @@ public protocol KeyboardObservering: AnyObject {
     func keyboardDidHide(keyboardInfo: KeyboardInfo)
 }
 
-extension KeyboardObservering {
+public extension KeyboardObservering {
     
     func keyboardWillShow(keyboardInfo: KeyboardInfo) {}
     func keyboardDidShow(keyboardInfo: KeyboardInfo) {}
