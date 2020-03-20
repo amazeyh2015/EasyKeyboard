@@ -83,11 +83,11 @@ public class KeyboardManager {
         return keyboardInfo
     }
     
-    func addObserver(_ observer: KeyboardObservering) {
+    public func addObserver(_ observer: KeyboardObservering) {
         observers.add(observer)
     }
     
-    func removeObserver(_ observer: KeyboardObservering) {
+    public func removeObserver(_ observer: KeyboardObservering) {
         observers.remove(observer)
     }
 }
