@@ -10,17 +10,9 @@ import UIKit
 
 public class KeyboardManager {
     
-    enum KeyboardEvent: String {
-        
-        case willShow
-        case didShow
-        case willHide
-        case didHide
-    }
-    
-    var observersInfo: [KeyboardEvent: [KeyboardObservering]] = [:]
-    
     public static let shared = KeyboardManager()
+    
+    var observers: NSHashTable<AnyObject> = NSHashTable(options: .weakMemory)
     
     init() {
         let selector1 = #selector(keyboardWillShow(_:))
@@ -41,32 +33,32 @@ public class KeyboardManager {
     
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let keyboardInfo = keyboardInfo(in: notification) else { return }
-        guard let observers = observersInfo[.willShow] else { return }
-        for observer in observers {
+        for object in observers.allObjects {
+            guard let observer = object as? KeyboardObservering else { continue }
             observer.keyboardWillShow(keyboardInfo: keyboardInfo)
         }
     }
     
     @objc func keyboardDidShow(_ notification: Notification) {
         guard let keyboardInfo = keyboardInfo(in: notification) else { return }
-        guard let observers = observersInfo[.didShow] else { return }
-        for observer in observers {
+        for object in observers.allObjects {
+            guard let observer = object as? KeyboardObservering else { continue }
             observer.keyboardDidShow(keyboardInfo: keyboardInfo)
         }
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
         guard let keyboardInfo = keyboardInfo(in: notification) else { return }
-        guard let observers = observersInfo[.willHide] else { return }
-        for observer in observers {
+        for object in observers.allObjects {
+            guard let observer = object as? KeyboardObservering else { continue }
             observer.keyboardWillHide(keyboardInfo: keyboardInfo)
         }
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
         guard let keyboardInfo = keyboardInfo(in: notification) else { return }
-        guard let observers = observersInfo[.didHide] else { return }
-        for observer in observers {
+        for object in observers.allObjects {
+            guard let observer = object as? KeyboardObservering else { continue }
             observer.keyboardDidHide(keyboardInfo: keyboardInfo)
         }
     }
@@ -91,61 +83,11 @@ public class KeyboardManager {
         return keyboardInfo
     }
     
-    func index(of observer: KeyboardObservering, in observers: [KeyboardObservering]) -> Int? {
-        for (index, item) in observers.enumerated() where item === observer {
-            return index
-        }
-        return nil
+    func addObserver(_ observer: KeyboardObservering) {
+        observers.add(observer)
     }
     
-    func addObserver(_ observer: KeyboardObservering, event: KeyboardEvent) {
-        if var observers = observersInfo[event] {
-            observers.append(observer)
-            observersInfo[event] = observers
-        } else {
-            observersInfo[event] = [observer]
-        }
-    }
-    
-    func removeObserver(_ observer: KeyboardObservering, event: KeyboardEvent) {
-        guard var observers = observersInfo[event] else { 
-            return 
-        }
-        if let index = index(of: observer, in: observers) {
-            observers.remove(at: index)
-            observersInfo[event] = observers
-        }
-    }
-    
-    public func addWillShowObserver(_ observer: KeyboardObservering) {
-        addObserver(observer, event: .willShow)
-    }
-    
-    public func addDidShowObserver(_ observer: KeyboardObservering) {
-        addObserver(observer, event: .didShow)
-    }
-    
-    public func addWillHideObserver(_ observer: KeyboardObservering) {
-        addObserver(observer, event: .willHide)
-    }
-    
-    public func addDidHideObserver(_ observer: KeyboardObservering) {
-        addObserver(observer, event: .didHide)
-    }
-    
-    public func removeWillShowObserver(_ observer: KeyboardObservering) {
-        removeObserver(observer, event: .willShow)
-    }
-    
-    public func removeDidShowObserver(_ observer: KeyboardObservering) {
-        removeObserver(observer, event: .didShow)
-    }
-    
-    public func removeWillHideObserver(_ observer: KeyboardObservering) {
-        removeObserver(observer, event: .willHide)
-    }
-    
-    public func removeDidHideObserver(observer: KeyboardObservering) {
-        removeObserver(observer, event: .didHide)
+    func removeObserver(_ observer: KeyboardObservering) {
+        observers.remove(observer)
     }
 }
