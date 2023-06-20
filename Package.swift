@@ -6,19 +6,14 @@ import PackageDescription
 let package = Package(
     name: "EasyKeyboard",
     platforms: [
-        .iOS(.v11), .macOS(.v10_15)
+        .iOS("13.0"), 
+        .macOS("11.0")
     ],
     products: [
-        .library(
-            name: "EasyKeyboard",
-            targets: ["EasyKeyboard"]),
+        .library(name: "EasyKeyboard", targets: ["EasyKeyboard"]),
     ],
     targets: [
-        .target(
-            name: "EasyKeyboard",
-            dependencies: []),
-        .testTarget(
-            name: "EasyKeyboardTests",
-            dependencies: ["EasyKeyboard"]),
+        .target(name: "EasyKeyboard", dependencies: []),
+        .testTarget(name: "EasyKeyboardTests", dependencies: ["EasyKeyboard"]),
     ]
 )

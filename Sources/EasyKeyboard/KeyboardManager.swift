@@ -69,10 +69,10 @@ public class KeyboardManager {
         }
         let keyboardInfo = KeyboardInfo()
         if let value = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue {
-            keyboardInfo.beginFrame = value.cgRectValue
+            keyboardInfo.frameBegin = value.cgRectValue
         }
         if let value = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            keyboardInfo.endFrame = value.cgRectValue
+            keyboardInfo.frameEnd = value.cgRectValue
         }
         if let number = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber {
             keyboardInfo.animationDuration = number.doubleValue

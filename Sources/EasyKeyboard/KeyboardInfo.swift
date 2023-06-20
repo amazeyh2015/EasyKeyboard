@@ -10,8 +10,8 @@ import UIKit
 
 public class KeyboardInfo {
     
-    public var beginFrame: CGRect = .zero
-    public var endFrame: CGRect = .zero
+    public var frameBegin: CGRect = .zero
+    public var frameEnd: CGRect = .zero
     public var animationDuration: Double = 0
     public var animationCurve: Int = 0
 }
